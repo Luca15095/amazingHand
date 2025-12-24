@@ -1,0 +1,3 @@
+dora-rs>=0.3.11
+loop-rate-limiters>=1.1.2
+mediapipe==0.10.20

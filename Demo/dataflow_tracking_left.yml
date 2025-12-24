@@ -1,0 +1,42 @@
+nodes:
+  # --------------------------------------------------------
+  # TEIL 1: HAND TRACKER (Zurück zur Standard-Konfiguration)
+  # --------------------------------------------------------
+  - id: hand_tracker
+    build: pip install -e HandTracking
+    path: HandTracking/HandTracking/main.py
+    inputs:
+      tick: dora/timer/millis/50
+    outputs:
+      - r_hand_pos
+      - l_hand_pos
+  # --------------------------------------------------------
+  # TEIL 2: SIMULATION (Bleibt beim mjpython Hack)
+  # --------------------------------------------------------
+  - id: r_hand_simulation
+    # Hier erzwingen wir mjpython via direktem Pfad
+    build: pip install -e AHSimulation
+    path: /opt/homebrew/Caskroom/miniconda/base/envs/amazingHand/bin/mjpython
+    args: AHSimulation/AHSimulation/mj_mink_right.py
+    inputs:
+      r_hand_pos: hand_tracker/r_hand_pos
+      tick: dora/timer/millis/2
+      tick_ctrl: dora/timer/millis/10
+    outputs:
+      - mj_joints_pos
+
+  - id: l_hand_simulation
+    build: pip install -e AHSimulation
+    path: /opt/homebrew/Caskroom/miniconda/base/envs/amazingHand/bin/mjpython
+    args: AHSimulation/AHSimulation/mj_mink_left.py
+    inputs:
+      l_hand_pos: hand_tracker/l_hand_pos
+      tick: dora/timer/millis/2
+      tick_ctrl: dora/timer/millis/10
+    outputs:
+      - mj_l_joints_pos
+
+  - id: AH_Hardware
+    path: ../PythonExample/AHControl.py
+    inputs:
+      mj_joints_pos: l_hand_simulation/mj_l_joints_pos
