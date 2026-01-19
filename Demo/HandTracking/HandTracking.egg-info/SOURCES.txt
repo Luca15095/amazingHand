@@ -1,4 +1,3 @@
-README.md
 pyproject.toml
 HandTracking/MediaPipeTest.py
 HandTracking/main.py

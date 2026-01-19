@@ -3,6 +3,9 @@ import serial.tools.list_ports
 import time
 import numpy as np
 
+TUNEFACTOR = 1.3
+OFFSET = 90
+
 class ArduinoController:
     print("ArduinoController wird initialisiert...")
     
@@ -45,9 +48,9 @@ class ArduinoController:
         
         # 2. Offset anwenden (0 rad = 90 Grad Servo-Mitte)
         if same_sign : 
-            servo_angle = 90 - degree
+            servo_angle = OFFSET - degree * TUNEFACTOR
         else: 
-            servo_angle = 90 + degree
+            servo_angle = OFFSET + degree
             
         
         # 3. Begrenzen auf 0-180

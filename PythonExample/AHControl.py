@@ -50,11 +50,9 @@ def main():
         print("Schließe Verbindung zum Arduino...")
         c.close()
 
-# Hilfsfunktionen (basierend auf deinem Skript)
 def move_index(a1, a2, speed):
     c.write_goal_speed(1, speed)
     c.write_goal_speed(2, speed)
-    a1Tuned = a1 * TuneFactor
     same_sign = (a1 * a2) > 0
     c.write_goal_position(1, MiddlePos[0] + a1, same_sign)
     c.write_goal_position(2, MiddlePos[1] + a2, same_sign)
